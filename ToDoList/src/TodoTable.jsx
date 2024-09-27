@@ -5,6 +5,7 @@ function TodoTable({ todos, deleteTodo }) {
           <tr>
             <th>Description</th>
             <th>Date</th>
+            <th>Priority</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -13,6 +14,7 @@ function TodoTable({ todos, deleteTodo }) {
             <tr key={index}>
               <td>{todoItem.description}</td>
               <td>{todoItem.date}</td>
+              <td>{todoItem.priority}</td>
               <td>
                 <button onClick={() => deleteTodo(index)}>Delete</button>
               </td>
