@@ -4,7 +4,7 @@ import TodoTable from "./TodoTable";
 
 function TodoList() {
 
-    const [todo, setTodo] = useState({ description: "", date: "" });
+    const [todo, setTodo] = useState({ description: "", date: "", priority: "" });
   const [todos, setTodos] = useState([]);
 
 
@@ -16,15 +16,19 @@ function TodoList() {
     setTodo({ ...todo, date: event.target.value }); 
   };
 
+  const handlePriorityChange = (event) => {
+    setTodo({ ...todo, priority: event.target.value });
+  };
+
   const addTodo = () => {
     if (todo.description.trim() === "" || todo.date.trim() === "") {
-        alert("Both description and date are required!");
+        alert("Both description, date and priority are required!");
         return;
       }
    
       setTodos([...todos, todo]);
       
-    setTodo({ description: "", date: "" });
+    setTodo({ description: "", date: "", priority: "" });
   };
 
   const deleteTodo = (index) => {
@@ -44,6 +48,11 @@ function TodoList() {
           onChange={handleDateChange}
           value={todo.date}
         />
+        <input
+        placeholder="Priority"
+        onChange={handlePriorityChange}
+        value={todo.priority}
+      />
         <button onClick={addTodo}>Add</button>
   
         <TodoTable todos={todos} deleteTodo={deleteTodo} />
