@@ -6,9 +6,13 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 function TodoList() {
-  const [todo, setTodo] = useState({ desc: "", date: "", priority: "" });
+  const [todo, setTodo] = useState({ desc: "", date: null, priority: "" });
   const [todos, setTodos] = useState([]);
   const gridRef = useRef();
 
@@ -16,8 +20,8 @@ function TodoList() {
 	setTodo({ ...todo, desc: event.target.value });
   };
 
-  const handleDateChange = (event) => {
-	setTodo({ ...todo, date: event.target.value });
+  const handleDateChange = (newDate) => {
+	setTodo({ ...todo, date: newDate });
   };
 
   const handlePriorityChange = (event) => {
@@ -25,13 +29,13 @@ function TodoList() {
   };
 
   const addTodo = () => {
-	if (todo.desc.trim() === "" || todo.date.trim() === "" || todo.priority.trim() === "") {
+	if (todo.desc.trim() === "" || todo.date === null || todo.priority.trim() === "") {
 	  alert("Description, date, and priority are required!");
 	  return;
 	}
 
 	setTodos([...todos, todo]);
-	setTodo({ desc: "", date: "", priority: "" });
+	setTodo({ desc: "", date: null, priority: "" });
   };
 
   const handleDelete = () => {
@@ -47,7 +51,7 @@ function TodoList() {
   const [columnDefs] = useState([
 	{ field: "desc", sortable: false, filter: true },
 	{ field: "priority", filter: true, cellStyle: params => params.value === "High" ? { color: 'red' } : { color: 'black' } },
-	{ field: "date", filter: true }
+	{ field: "date", filter: true, valueFormatter: params => dayjs(params.value).format('DD/MM/YYYY')}
   ]);
 
   return (
@@ -67,10 +71,14 @@ function TodoList() {
       label="Priority" 
       onChange={e => setTodo({...todo, priority: e.target.value })} 
       value={todo.priority} /> 
-    <TextField
-      label="Date" 
-      onChange={e => setTodo({...todo, date: e.target.value })} 
-      value={todo.date} />
+     <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            label="Select Date"
+            value={todo.date}
+            onChange={handleDateChange}
+            renderInput={(params) => <TextField {...params} />}
+          />
+        </LocalizationProvider>
 	  <Button variant="contained" color="success" onClick={addTodo}>Add</Button>
 	  <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
 	  </Stack>
