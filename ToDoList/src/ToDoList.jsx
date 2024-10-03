@@ -3,6 +3,9 @@ import React, { useState, useRef } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Stack from '@mui/material/Stack';
 
 function TodoList() {
   const [todo, setTodo] = useState({ desc: "", date: "", priority: "" });
@@ -49,23 +52,28 @@ function TodoList() {
 
   return (
 	<>
-	  <input
-		placeholder="Description"
-		onChange={handleDescChange}
-		value={todo.desc}
-	  />
-	  <input
-		placeholder="Priority"
-		onChange={handlePriorityChange}
-		value={todo.priority}
-	  />
-	  <input
-		type="date"
-		onChange={handleDateChange}
-		value={todo.date}
-	  />
-	  <button onClick={addTodo}>Add</button>
-	  <button onClick={handleDelete}>Delete</button>
+	<Stack 
+	 mt={2} 
+	direction="row" 
+	spacing={2}
+	justifyContent="center" 
+  alignItems="center"
+  >
+	  <TextField 
+      label="Description" 
+      onChange={e => setTodo({...todo, desc: e.target.value })} 
+      value={todo.desc} />
+    <TextField
+      label="Priority" 
+      onChange={e => setTodo({...todo, priority: e.target.value })} 
+      value={todo.priority} /> 
+    <TextField
+      label="Date" 
+      onChange={e => setTodo({...todo, date: e.target.value })} 
+      value={todo.date} />
+	  <Button variant="contained" color="success" onClick={addTodo}>Add</Button>
+	  <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+	  </Stack>
 	  <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
 		<AgGridReact
 		  ref={gridRef}
