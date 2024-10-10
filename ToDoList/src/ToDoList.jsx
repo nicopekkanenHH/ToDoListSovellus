@@ -38,6 +38,10 @@ function TodoList() {
 	setTodo({ desc: "", date: null, priority: "" });
   };
 
+  const clearTodos = () => {
+    setTodos([]); 
+  };
+
   const handleDelete = () => {
     const selectedNodes = gridRef.current.getSelectedNodes();
     if (selectedNodes.length > 0) {
@@ -81,6 +85,7 @@ function TodoList() {
         </LocalizationProvider>
 	  <Button variant="contained" color="success" onClick={addTodo}>Add</Button>
 	  <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+    <Button variant="contained" color="secondary" onClick={clearTodos}>Clear</Button> 
 	  </Stack>
 	  <div className="ag-theme-material" style={{ width: 700, height: 500 }}>
 		<AgGridReact
